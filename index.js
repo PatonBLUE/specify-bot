@@ -25,6 +25,12 @@ client.once(Events.ClientReady, async () => {
 
 client.on(Events.InteractionCreate, async i => {
   if (!i.isChatInputCommand() || i.commandName !== 'clean-channel') return;
+
+  // Check if user has Administrator permission
+  if (!i.member.permissions.has('Administrator')) {
+    return i.reply({ content: 'Only admins can use this command!', ephemeral: true });
+  }
+
   const ch = i.channelId;
   if (protectedChannels.has(ch)) {
     protectedChannels.delete(ch);
